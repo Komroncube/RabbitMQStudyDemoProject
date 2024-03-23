@@ -25,6 +25,17 @@ builder.Services.AddMassTransit(x =>
             c.Username("guest");
             c.Password("guest");
         });
+        cfg.ReceiveEndpoint("NotifyTransactionQueue", e =>
+        {
+            e.ConfigureConsumer<NotifyTransactionConsumer>(context);
+        });
+        cfg.ReceiveEndpoint("CreateTransactionQueue", e =>
+        {
+            e.ConfigureConsumers(context);
+        });
+        cfg.ClearSerialization();
+        cfg.UseRawJsonSerializer();
+        cfg.ConfigureEndpoints(context);
     });
 });
 
